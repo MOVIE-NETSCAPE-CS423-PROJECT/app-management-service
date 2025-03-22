@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -35,9 +36,6 @@ public class Movie extends BaseEntity {
     @Column
     private String imageUrl;
 
-    @Column
-    private String thumbnail;
-
     @Column(nullable = false)
     private String duration;
 
@@ -47,12 +45,14 @@ public class Movie extends BaseEntity {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
+    @Column(nullable = false)
     private LocalDate uploadDate;
 
+    @Column(nullable = false)
     private LocalDate lastUpdated;
 
     @Column(nullable = false)
-    private boolean adultMovie;
+    private Boolean isAdultMovie;
 
 
     public MovieResponse mapToResponse() {
@@ -65,12 +65,13 @@ public class Movie extends BaseEntity {
                 .title(title)
                 .isPremium(isPremium)
                 .rating(rating)
-                .releaseDate(releaseDate)
+                .releaseDate(releaseDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .storyHint(storyHint)
-                .thumbnail(thumbnail)
                 .genre(genre)
                 .duration(duration)
-                .isAdultMovie(adultMovie)
+                .isAdultMovie(isAdultMovie)
+                .lastUpdated(lastUpdated.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .uploadDate(uploadDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
     }
 

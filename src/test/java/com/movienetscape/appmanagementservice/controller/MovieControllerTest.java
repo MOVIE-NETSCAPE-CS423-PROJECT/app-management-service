@@ -49,21 +49,19 @@ public class MovieControllerTest {
                 .isPremium(false)
                 .streamUrl("http://stream.com/inception")
                 .imageUrl("http://images.com/inception.jpg")
-                .thumbnail("http://thumb.com/inception.jpg")
-                .releaseDate(LocalDate.of(2010, 7, 16))
+                .releaseDate(String.valueOf(LocalDate.of(2010, 7, 16)))
                 .duration(148L).build();
     }
 
 
     @Test
     void testCreateMovie() throws Exception {
-        // Mock response
         MovieResponse response = new MovieResponse();
         response.setTitle("Inception");
         response.setGenre("Sci-Fi");
-        response.setReleaseDate(LocalDate.of(2010, 7, 16));
+        response.setReleaseDate("2003-10-12");
         response.setThumbnail("http://thumb.com/inception.jpg");
-        response.setMovieId("");
+        response.setMovieId("Jim Jam Movie");
 
         when(movieService.createMovie(any(MovieRequest.class)))
                 .thenReturn(response);

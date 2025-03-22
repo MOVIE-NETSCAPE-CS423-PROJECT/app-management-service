@@ -23,8 +23,10 @@ public class MovieResponse {
     private String thumbnail;
     private String duration;
     private int rating;
-    private LocalDate releaseDate;
+    private String releaseDate;
     private boolean isAdultMovie;
+    private String uploadDate;
+    private String lastUpdated;
 
 
 }

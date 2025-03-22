@@ -1,6 +1,7 @@
 package com.movienetscape.appmanagementservice.dto.request;
 
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AgeRatingRequest {
 
-    @NotEmpty(message = "Category name must not be empty")
-    @NotNull(message = "Category name must not be null")
+    @NotBlank(message = "Age rating category name must not be null or empty")
     private String name;
 }

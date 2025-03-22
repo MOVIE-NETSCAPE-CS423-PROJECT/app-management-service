@@ -14,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -34,15 +36,14 @@ public class AppDataServiceImpl implements AppDataService {
                         .movieId(movie.getId())
                         .title(movie.getTitle())
                         .genre(movie.getGenre())
-                        .isAdultMovie(movie.isAdultMovie())
+                        .isAdultMovie(movie.getIsAdultMovie())
                         .streamingUrl(movie.getStreamingUrl())
-                        .releaseDate(movie.getReleaseDate())
+                        .releaseDate(movie.getReleaseDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                         .duration(movie.getDuration())
                         .imageUrl(movie.getImageUrl())
                         .rating(movie.getRating())
                         .isPremium(movie.isPremium())
                         .storyHint(movie.getStoryHint())
-                        .thumbnail(movie.getThumbnail())
                         .build());
 
 

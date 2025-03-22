@@ -21,7 +21,7 @@ public interface MovieRepository extends JpaRepository<Movie, String> {
 
     Optional<Movie> findMovieByTitle(String title);
 
-    List<Movie> findMovieByAdultMovie(boolean adultMovie);
+    List<Movie> findMovieByIsAdultMovie(Boolean isAdultMovie);
 
     List<Movie> findMovieByReleaseDate(LocalDate releaseDate);
 

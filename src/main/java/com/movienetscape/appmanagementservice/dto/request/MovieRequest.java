@@ -8,8 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -33,17 +31,18 @@ public class MovieRequest {
     @NotBlank(message = "Image URL can't be blank")
     private String imageUrl;
 
-    @NotBlank(message = "Thumbnail can't be blank")
-    private String thumbnail;
+
 
     private Integer rating = 0;
 
-    private boolean isAdultMovie;
+    @NotNull(message = "Adult movie can't be blank")
+    private Boolean isAdultMovie;
 
-    @NotNull(message = "Release date can't be null")
+    @NotNull(message = "Release date can't be null or empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate releaseDate;
+    private String releaseDate;
 
-    @NotNull(message = "Duration can't be null")
+
+    @NotNull(message = "Duration can't be null or empty")
     private Long duration;
 }

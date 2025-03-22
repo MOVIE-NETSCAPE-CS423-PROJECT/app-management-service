@@ -6,10 +6,14 @@ import com.movienetscape.appmanagementservice.model.Movie;
 import com.movienetscape.appmanagementservice.repository.MovieRepository;
 import com.movienetscape.appmanagementservice.service.contract.MovieService;
 import com.movienetscape.appmanagementservice.util.MovieException;
+import com.movienetscape.appmanagementservice.util.RecordExistException;
 import com.movienetscape.appmanagementservice.util.UtilFunctions;
+import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +27,7 @@ public class MovieServiceImpl implements MovieService {
 
         return (MovieResponse) movieRepository.findMovieByTitle(request.getTitle())
                 .map(movie -> {
-                    throw new MovieException("Movie with title: " + movie.getTitle() + "already exists");
+                    throw new RecordExistException("Movie with title: " + movie.getTitle() + " already exists");
                 })
                 .orElseGet(() -> persist(new Movie(), request));
     }
@@ -32,19 +36,19 @@ public class MovieServiceImpl implements MovieService {
     private MovieResponse persist(Movie movie, MovieRequest request) {
         movie.setTitle(request.getTitle());
         movie.setGenre(request.getGenre());
-        movie.setReleaseDate(request.getReleaseDate());
+        movie.setReleaseDate(LocalDate.parse(request.getReleaseDate(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         movie.setPremium(request.getIsPremium());
         movie.setStoryHint(request.getStoryHint());
         movie.setStreamingUrl(request.getStreamUrl());
         movie.setImageUrl(request.getImageUrl());
-        movie.setThumbnail(request.getThumbnail());
         movie.setDuration(UtilFunctions.getDurationInTimeFormat(request.getDuration()));
-        movie.setAdultMovie(request.isAdultMovie());
+        movie.setIsAdultMovie(request.getIsAdultMovie());
+        movie.setLastUpdated(LocalDate.now());
+        movie.setUploadDate(LocalDate.now());
+        Movie savedMovie = movieRepository.save(movie);
 
-
-        movieRepository.save(movie);
-
-        return movie.mapToResponse();
+        return savedMovie.mapToResponse();
     }
 
     public MovieResponse updateMovie(String movieId, MovieRequest request) {
@@ -73,7 +77,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public List<MovieResponse> getAllMoviesByCategory(boolean isAdultMovie) {
-        return movieRepository.findMovieByAdultMovie(isAdultMovie).stream()
+        return movieRepository.findMovieByIsAdultMovie(isAdultMovie).stream()
                 .map(Movie::mapToResponse)
                 .collect(Collectors.toList());
     }
